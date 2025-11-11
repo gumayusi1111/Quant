@@ -1,0 +1,56 @@
+{
+  "data": {
+    "daily_dir": "data/daily",
+    "minute_dir": "data/minute",
+    "logs_dir": "data/logs",
+    "watchlists_dir": "data/watchlists"
+  },
+  "strategy": {
+    "universe": [
+      "510300",
+      "510500",
+      "513100"
+    ],
+    "lookback_days": 60
+  },
+  "providers": {
+    "minute_source": "tushare",
+    "daily_source": "chinadata"
+  },
+  "full_pool": {
+    "history_days": 90,
+    "refresh_interval_days": 60,
+    "master_path": "data/master/etf_master.csv",
+    "chunk_size": 25
+  },
+  "active_pool": {
+    "universe_path": "data/universe/active_universe.csv",
+    "refresh_interval_days": 7,
+    "filters": {
+      "mean_amount_60": 20000,
+      "median_amount_60": 12000,
+      "floor_amount_60": 5000,
+      "trade_days_ratio_60": 0.65,
+      "listed_days_min": 90,
+      "min_price": 0.5,
+      "max_range": 0.085
+    }
+  },
+  "watchlist": {
+    "top_n": 20,
+    "path": "data/watchlists/watchlist_today.csv"
+  },
+  "logs": {
+    "signal_log_path": "data/logs/signal_log.csv",
+    "directory": "data/logs",
+    "filename": "quant.log",
+    "level": "INFO"
+  },
+  "minute": {
+    "freq": "5min"
+  },
+  "scheduler": {
+    "nightly_run_time": "21:00",
+    "intraday_interval_minutes": 5
+  }
+}

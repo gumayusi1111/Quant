@@ -1,0 +1,10 @@
+{
+  "tushare": {
+    "token": "REPLACE_WITH_TUSHARE_TOKEN",
+    "usage": "Official Tushare package. Only historical minute bars are supported."
+  },
+  "chinadata": {
+    "token": "REPLACE_WITH_CHINADATA_TOKEN",
+    "usage": "chinadata package for daily K-line and other endpoints."
+  }
+}

@@ -1,0 +1,33 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+*.log
+
+Thumbs.db
+.DS_Store
+
+# Secrets
+config/tokens.json
+
+# Data lake (keep templates/gitkeep only)
+data/master/*
+!data/master/.gitkeep
+!data/master/*.template.csv
+data/universe/*
+!data/universe/.gitkeep
+!data/universe/*.template.csv
+data/daily/*
+!data/daily/.gitkeep
+data/minute/*
+!data/minute/.gitkeep
+data/logs/*
+!data/logs/.gitkeep
+!data/logs/*.template.csv
+data/watchlists/*
+!data/watchlists/.gitkeep
+!data/watchlists/*.template.csv
+
+# Generated outputs
+outputs/*
+!outputs/.gitkeep
