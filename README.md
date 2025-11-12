@@ -54,7 +54,7 @@ config/                 # settings.json + tokens(.json/.template)
 data/
   ├─ master/            # etf_master.csv（每 ~60 天重建；模板已提供）
   ├─ universe/          # active_universe.csv（活跃池）
-  ├─ daily/             # 每只 ETF 的日K CSV（近 90 天历史 + 日更追加）
+  ├─ daily/             # 每只 ETF 的日K CSV，含原始价 + 前/后复权价 + 复权因子
   ├─ minute/            # 观察池分钟数据，按 ts_code/日期/频率组织
   ├─ logs/              # signal_log.csv 等流水日志（模板、生成品）
   └─ watchlists/        # watchlist_today.csv 等名单

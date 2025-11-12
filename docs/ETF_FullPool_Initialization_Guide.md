@@ -111,7 +111,11 @@
 - `ts_code,name,list_date,management,benchmark,market,status`
 
 ### 5.2 `data/daily/{ts_code}.csv`
-- `trade_date,open,high,low,close,vol,amount,pre_close,pct_chg`（升序保存）
+- `trade_date,open,high,low,close,vol,amount,pre_close,pct_chg,adj_factor`
+- 派生列：
+  - `open_front_adj/high_front_adj/low_front_adj/close_front_adj/pre_close_front_adj`
+  - `open_back_adj/high_back_adj/low_back_adj/close_back_adj/pre_close_back_adj`
+- 其中 `_front_adj` 为前复权价（历史价格平移至最新），`_back_adj` 为后复权价（最新价向历史平移）。
 
 ### 5.3 `data/universe/active_universe.csv`
 - `ts_code, amt_mean_60, trade_days_ratio_60, listed_days`
