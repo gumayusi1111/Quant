@@ -27,6 +27,8 @@ data/logs/*
 data/watchlists/*
 !data/watchlists/.gitkeep
 !data/watchlists/*.template.csv
+data/indicators/*
+!data/indicators/.gitkeep
 
 # Generated outputs
 outputs/*

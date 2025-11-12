@@ -36,6 +36,17 @@ python main.py --active-pool
 - 规则详见 `docs/ACTIVE_POOL_RULES.md`，可通过 `config/settings.json -> active_pool.filters` 调整阈值。
 - 输出写入 `data/universe/active_universe.csv`，日志记录筛选数量与耗时。
 
+### Indicator Batch
+
+```bash
+python main.py --indicators
+```
+
+- 读取 `data/daily/` 缓存，使用 `src/indicator_engine` 计算 MA/EXPMA/MACD/KDJ/RSI/BOLL/WR/DMI/BOLL/DPO/TRIX/DMA/BBI/MTM/OBV/ASI 等指标。
+- 默认仅对活跃池 (`data/universe/active_universe.csv`) 中的 ETF 生成指标；如需全量可在脚本中传入 symbol 列表。
+- 每个 `ts_code` 生成一个 `data/indicators/{ts_code}.csv` 结果文件，默认使用 `*_front_adj` 价格，保留 6 位小数。
+- 具体指标与参数详见 `docs/INDICATOR_CATALOG.md`。
+
 ### Providers & Tokens
 
 - `tushare.token`（822...）：官方 Tushare 包，只能请求历史分钟行情；相关逻辑放在
@@ -55,6 +66,7 @@ data/
   ├─ master/            # etf_master.csv（每 ~60 天重建；模板已提供）
   ├─ universe/          # active_universe.csv（活跃池）
   ├─ daily/             # 每只 ETF 的日K CSV，含原始价 + 前/后复权价 + 复权因子
+  ├─ indicators/        # 技术指标 CSV 输出（每个 ts_code 一份）
   ├─ minute/            # 观察池分钟数据，按 ts_code/日期/频率组织
   ├─ logs/              # signal_log.csv 等流水日志（模板、生成品）
   └─ watchlists/        # watchlist_today.csv 等名单

@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 
 from src.pipelines import run_full_pool_refresh, run_active_pool_refresh
+from src.pipelines.indicator_batch import run_indicator_batch
 from src.scheduler import run_intraday_pipeline, run_nightly_pipeline
 from src.utils.config import load_settings
 
@@ -15,6 +16,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--active-pool", action="store_true", help="Refresh active ETF universe.")
     parser.add_argument("--nightly", action="store_true", help="Run nightly pipeline.")
     parser.add_argument("--intraday", action="store_true", help="Run intraday pipeline.")
+    parser.add_argument("--indicators", action="store_true", help="Recompute indicators for cached daily data.")
     return parser.parse_args()
 
 
@@ -26,12 +28,14 @@ def main() -> None:
         run_full_pool_refresh(settings)
     if args.active_pool:
         run_active_pool_refresh(settings)
+    if args.indicators:
+        run_indicator_batch(settings)
     if args.nightly:
         run_nightly_pipeline(settings)
     if args.intraday:
         run_intraday_pipeline(settings)
-    if not any((args.full_pool, args.nightly, args.intraday)):
-        print("Specify --full-pool/--nightly/--intraday to run a pipeline.")
+    if not any((args.full_pool, args.active_pool, args.indicators, args.nightly, args.intraday)):
+        print("Specify --full-pool/--active-pool/--indicators/--nightly/--intraday to run a pipeline.")
 
 
 if __name__ == "__main__":

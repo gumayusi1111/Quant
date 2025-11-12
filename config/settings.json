@@ -3,7 +3,8 @@
     "daily_dir": "data/daily",
     "minute_dir": "data/minute",
     "logs_dir": "data/logs",
-    "watchlists_dir": "data/watchlists"
+    "watchlists_dir": "data/watchlists",
+    "indicators_dir": "data/indicators"
   },
   "strategy": {
     "universe": [
