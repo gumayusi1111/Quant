@@ -59,6 +59,7 @@ data/
   ├─ logs/              # signal_log.csv 等流水日志（模板、生成品）
   └─ watchlists/        # watchlist_today.csv 等名单
 docs/                   # 架构 / 数据流程 / 规则文档
+                        # 指标清单：docs/INDICATOR_CATALOG.md
 outputs/                # 报告或可视化结果
 src/
   ├─ data_fetcher/      # tushare/chinadata 调用封装
