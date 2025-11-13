@@ -1,0 +1,1 @@
+"Bear market strategies."

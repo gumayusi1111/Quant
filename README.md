@@ -47,6 +47,27 @@ python main.py --indicators
 - 每个 `ts_code` 生成一个 `data/indicators/{ts_code}.csv` 结果文件，默认使用 `*_front_adj` 价格，保留 6 位小数。
 - 具体指标与参数详见 `docs/INDICATOR_CATALOG.md`。
 
+### Watchlist（根据指标筛选）
+
+```bash
+python main.py --watchlist
+```
+
+- 读取活跃池及其指标，筛选满足「MA 多头 + MACD 金叉 + KDJ 未过热」等条件的 ETF，并结合 RSI/BOLL/WR/OBV 做进一步确认。
+- 输出 `data/watchlists/watchlist_today.csv`，包含 `ts_code/date/close/pct_chg/score/tier/...` 等字段，供盘前/盘中盯盘。
+- 按流动性 + 波动率 + 价位等指标自动打 `tier`：A（高流动/低波动，优先执行）、B（等待确认）、C（高波动或量能不足）。可在 `src/pipelines/watchlist.py` 中调整阈值。
+- 规则可在 `src/pipelines/watchlist.py` 中调整，当前逻辑为第一版试运行。
+
+### Watchlist Backtest（验证信号胜率）
+
+```bash
+python main.py --backtest-watchlist
+```
+
+- 会遍历每个 ETF 的历史指标，逐日复现 watchlist 筛选条件，并计算 1/3/5 日的前瞻收益。
+- 原始信号写入 `data/backtests/watchlist_signals.csv`；结合卖出规则生成的真实交易写入 `data/backtests/watchlist_trades.csv`（含进出场时间、收益、持仓天数、退出原因）。
+- 汇总统计写入 `data/backtests/watchlist_summary*.csv`（整体/年份/行情段），展示胜率、平均/中位收益，用于调参或复盘。
+
 ### Providers & Tokens
 
 - `tushare.token`（822...）：官方 Tushare 包，只能请求历史分钟行情；相关逻辑放在
@@ -67,6 +88,7 @@ data/
   ├─ universe/          # active_universe.csv（活跃池）
   ├─ daily/             # 每只 ETF 的日K CSV，含原始价 + 前/后复权价 + 复权因子
   ├─ indicators/        # 技术指标 CSV 输出（每个 ts_code 一份）
+  ├─ backtests/         # watchlist 信号、交易、统计与市场环境
   ├─ minute/            # 观察池分钟数据，按 ts_code/日期/频率组织
   ├─ logs/              # signal_log.csv 等流水日志（模板、生成品）
   └─ watchlists/        # watchlist_today.csv 等名单
@@ -100,3 +122,17 @@ src/
 - 推送到 GitHub 远程前需要所有者确认；删除文件或进行大改动前也要先沟通。
 - 测试脚本统一放在 `tests/` 下；任何新文件都要放在对应子目录，根目录保持干净。
 - 新增/调整模块后，记得同步更新 README 或相关 docs，删除过期的说明文件。
+- 当需要拉长历史测试窗口（例如 2020 起）时，可先运行：
+
+```bash
+python main.py --backfill-daily
+python main.py --indicators
+python main.py --backtest-watchlist
+python main.py --market-regime
+python main.py --auto            # 自动检查并串行执行必要的刷新
+```
+
+- `--backfill-daily` 会依据 `config/settings.json -> history_backfill.start_date` 为全量 ETF 重建日线缓存。
+- 重跑指标后，再执行回测即可获得更长区间的样本。
+- `--market-regime` 根据 `market_guard` 的多指标组合（MA60/MA120、MACD、RSI、波动率等）输出每日行情状态（bull / bear / sideways），若缺少基准 ETF 会自动用活跃池等权指数。写入 `data/backtests/market_regime.csv` 与 `market_regime_segments.csv`。
+- `--auto` 会按顺序检查“全量池 / 日线缓存 / 活跃池 / 指标 / 盯盘名单”的更新时间，只有在超出阈值时才触发相应流程，最后始终生成当日 watchlist，方便定时任务调用。

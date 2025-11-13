@@ -1,6 +1,12 @@
 """Lightweight backtest helpers."""
 
-from .engine import run_backtest
+from .engine import BacktestResult, run_backtest
 from .analyzer import summarize_performance
+from .watchlist import run_watchlist_backtest
 
-__all__ = ["run_backtest", "summarize_performance"]
+__all__ = [
+    "BacktestResult",
+    "run_backtest",
+    "summarize_performance",
+    "run_watchlist_backtest",
+]

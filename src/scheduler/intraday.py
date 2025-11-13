@@ -6,15 +6,17 @@ from datetime import datetime
 from typing import Dict
 
 from src.logging import get_logger
+from src.pipelines import run_execution_pipeline
 
 LOGGER = get_logger("scheduler.intraday")
 
 
 def run_intraday_pipeline(settings: Dict) -> None:
-    """Placeholder intraday hook."""
+    """Trigger intraday execution planning."""
     interval = settings.get("scheduler", {}).get("intraday_interval_minutes", 5)
     LOGGER.info(
-        "Intraday pipeline placeholder triggered at %s (interval=%smin)",
+        "Intraday pipeline triggered at %s (interval=%smin)",
         datetime.utcnow().isoformat(),
         interval,
     )
+    run_execution_pipeline(settings)

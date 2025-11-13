@@ -28,18 +28,141 @@
     "universe_path": "data/universe/active_universe.csv",
     "refresh_interval_days": 7,
     "filters": {
-      "mean_amount_60": 20000,
-      "median_amount_60": 12000,
-      "floor_amount_60": 5000,
-      "trade_days_ratio_60": 0.65,
+      "mean_amount_60": 15000,
+      "median_amount_60": 8000,
+      "floor_amount_60": 3000,
+      "trade_days_ratio_60": 0.55,
       "listed_days_min": 90,
       "min_price": 0.5,
-      "max_range": 0.085
+      "max_range": 0.1
     }
   },
   "watchlist": {
     "top_n": 20,
-    "path": "data/watchlists/watchlist_today.csv"
+    "path": "data/watchlists/watchlist_today.csv",
+    "pool": {
+      "path": "data/watchlists/watch_pool.csv",
+      "expiry_days": 10
+    },
+    "filters": {
+      "bull": {
+        "atr_min": 0.02,
+        "atr_max": 0.1,
+        "atr_a_max": 0.08,
+        "atr_b_max": 0.12,
+        "range_a_max": 0.08,
+        "range_b_max": 0.12,
+        "price_vs_ma20_a_low": -0.04,
+        "price_vs_ma20_a_high": 0.08,
+        "price_vs_ma20_b_low": -0.06,
+        "price_vs_ma20_b_high": 0.12,
+        "min_turnover_a": 400000,
+        "min_turnover_b": 200000,
+        "volume_ratio_min": 0.8
+      },
+      "sideways": {
+        "ma_gap_max": 0.02,
+        "ma_slope_limit": 0.01,
+        "boll_bandwidth_max": 0.12,
+        "atr_max": 0.05,
+        "atr_a_max": 0.04,
+        "atr_b_max": 0.06,
+        "range_a_max": 0.04,
+        "range_b_max": 0.06,
+        "price_ma20_a": 0.03,
+        "price_ma20_b": 0.05,
+        "min_turnover": 200000
+      },
+      "bear": {
+        "drawdown_min": 0.2,
+        "min_turnover_a": 200000,
+        "min_turnover_b": 100000
+      }
+    }
+  },
+  "watchlist_backtest": {
+    "signals_path": "data/backtests/watchlist_signals.csv",
+    "summary_path": "data/backtests/watchlist_summary.csv",
+    "trades_path": "data/backtests/watchlist_trades.csv",
+    "horizons": [
+      1,
+      3,
+      5
+    ],
+    "universe_path": "data/universe/active_universe.csv",
+    "max_hold_days": 5
+  },
+  "history_backfill": {
+    "start_date": "20200101",
+    "batch_size": 20
+  },
+  "strategies": {
+    "bull": {
+      "min_turnover": 1000000,
+      "volume_ratio_min": 1.3,
+      "volume_recent_window": 5,
+      "volume_base_window": 20,
+      "breakout_lookback": 10,
+      "breakout_buffer": 0.003,
+      "rsi_max": 70,
+      "allow_retest": true,
+      "ma_trend_fast": "ma10",
+      "ma_trend_slow": "ma20"
+    },
+    "sideways": {
+      "flat_threshold": 0.01,
+      "max_distance_ma20": 0.015,
+      "min_turnover": 200000
+    },
+    "bear": {
+      "min_rebound_pct": 1.0,
+      "volume_multiplier": 1.2
+    }
+  },
+  "positions": {
+    "regime_weights": {
+      "bull": 1.0,
+      "sideways": 0.5,
+      "bear": 0.2,
+      "default": 0.3
+    },
+    "tier_multipliers": {
+      "A": 1.0,
+      "B": 0.7,
+      "C": 0.4,
+      "default": 0.4
+    }
+  },
+  "market_guard": {
+    "benchmarks": [
+      "510300.SH",
+      "510500.SH",
+      "159915.SZ"
+    ],
+    "composite_limit": 120,
+    "ma_fast": 60,
+    "ma_slow": 120,
+    "trend_threshold": 0.002,
+    "macd_fast": 12,
+    "macd_slow": 26,
+    "macd_signal": 9,
+    "rsi_period": 14,
+    "bull_rsi": 55,
+    "bear_rsi": 45,
+    "vol_period": 14,
+    "high_vol_threshold": 0.02,
+    "low_vol_threshold": 0.01,
+    "output_path": "data/backtests/market_regime.csv",
+    "segments_path": "data/backtests/market_regime_segments.csv"
+  },
+  "execution": {
+    "minute_dir": "data/minute",
+    "orders_path": "data/execution/pending_orders.csv",
+    "frequency": "5min",
+    "limit": 300,
+    "fetch_enabled": false,
+    "session_start": "09:25:00",
+    "session_end": "15:05:00"
   },
   "logs": {
     "signal_log_path": "data/logs/signal_log.csv",
