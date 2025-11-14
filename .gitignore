@@ -33,3 +33,9 @@ data/indicators/*
 # Generated outputs
 outputs/*
 !outputs/.gitkeep
+
+# Frontend
+node_modules/
+frontend/*/node_modules/
+frontend/*/.next/
+frontend/*/dist/
